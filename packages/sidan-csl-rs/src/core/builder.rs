@@ -402,9 +402,7 @@ impl IMeshCSL for MeshCSL {
         mint: MintItem,
         index: u64,
     ) -> Result<(), JsError> {
-        println!("6-2-1");
         let redeemer_info = mint.redeemer.unwrap();
-        println!("6-2-2");
         let mint_redeemer = csl::Redeemer::new(
             &csl::RedeemerTag::new_mint(),
             &to_bignum(index),
@@ -414,18 +412,14 @@ impl IMeshCSL for MeshCSL {
                 &to_bignum(redeemer_info.ex_units.steps),
             ),
         );
-        println!("6-2-3");
         let script_source_info = mint.script_source.unwrap();
-        println!("6-2-4");
         let mint_script = match script_source_info {
             ScriptSource::InlineScriptSource(script) => {
-                println!("6-2-5");
                 let language_version: csl::Language = match script.language_version {
                     LanguageVersion::V1 => csl::Language::new_plutus_v1(),
                     LanguageVersion::V2 => csl::Language::new_plutus_v2(),
                     LanguageVersion::V3 => csl::Language::new_plutus_v3(),
                 };
-                println!("6-2-6");
                 csl::PlutusScriptSource::new_ref_input(
                     &csl::ScriptHash::from_hex(mint.policy_id.as_str())?,
                     &csl::TransactionInput::new(
@@ -437,27 +431,22 @@ impl IMeshCSL for MeshCSL {
                 )
             }
             ScriptSource::ProvidedScriptSource(script) => {
-                println!("6-2-7");
                 let language_version: csl::Language = match script.language_version {
                     LanguageVersion::V1 => csl::Language::new_plutus_v1(),
                     LanguageVersion::V2 => csl::Language::new_plutus_v2(),
                     LanguageVersion::V3 => csl::Language::new_plutus_v3(),
                 };
-                println!("6-2-8");
                 csl::PlutusScriptSource::new(&csl::PlutusScript::from_hex_with_version(
                     script.script_cbor.as_str(),
                     &language_version,
                 )?)
             }
         };
-
-        println!("6-2-9");
         mint_builder.add_asset(
             &csl::MintWitness::new_plutus_script(&mint_script, &mint_redeemer),
             &csl::AssetName::new(hex::decode(mint.asset_name).unwrap())?,
             &csl::Int::new_i32(mint.amount.try_into().unwrap()),
         )?;
-        println!("6-2-10");
         Ok(())
     }
 

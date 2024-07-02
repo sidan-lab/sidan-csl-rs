@@ -1508,6 +1508,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "whisky_examples"
+version = "0.0.0"
+dependencies = [
+ "whisky",
+]
+
+[[package]]
 name = "winapi"
 version = "0.3.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
