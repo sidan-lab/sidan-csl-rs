@@ -1,11 +1,11 @@
 use whisky::{
     builder::{IMeshTxBuilder, MeshTxBuilder, WData, WRedeemer},
     csl::JsError,
-    model::{Budget, ProvidedScriptSource, UTxO},
+    model::{Asset, Budget, ProvidedScriptSource, UTxO},
 };
 
-pub async fn unlock_fund(
-    script_utxo: UTxO,
+pub async fn mint_tokens(
+    to_mint_asset: Asset,
     redeemer: &str,
     script: ProvidedScriptSource,
     my_address: &str,
@@ -13,20 +13,18 @@ pub async fn unlock_fund(
     collateral: UTxO,
 ) -> Result<String, JsError> {
     let mut mesh = MeshTxBuilder::new_core();
-    mesh.spending_plutus_script_v2()
-        .tx_in(
-            &script_utxo.input.tx_hash,
-            script_utxo.input.output_index,
-            script_utxo.output.amount,
-            &script_utxo.output.address,
+
+    mesh.mint_plutus_script_v2()
+        .mint(
+            to_mint_asset.quantity_u64(),
+            &to_mint_asset.policy(),
+            &to_mint_asset.name(),
         )
-        .tx_in_inline_datum_present()
-        // .tx_in_datum_value(datum here) or provide datum value
-        .tx_in_redeemer_value(WRedeemer {
+        .minting_script(&script.script_cbor, script.language_version)
+        .mint_redeemer_value(WRedeemer {
             data: WData::JSON(redeemer.to_string()),
             ex_units: Budget { mem: 0, steps: 0 },
         })
-        .tx_in_script(&script.script_cbor, Some(script.language_version))
         .change_address(my_address)
         .tx_in_collateral(
             &collateral.input.tx_hash,
