@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Path to Cargo.toml
-CARGO_TOML="../packages/Cargo.toml"
-WHISKY_CARGO_TOML="../packages/whisky/Cargo.toml"
-SIDAN_CSL_RS_CARGO_TOML="../packages/sidan-csl-rs/Cargo.toml"
-EXAMPLES_CARGO_TOML="../packages/whisky-examples/Cargo.toml"
+CARGO_TOML="packages/Cargo.toml"
+WHISKY_CARGO_TOML="packages/whisky/Cargo.toml"
+SIDAN_CSL_RS_CARGO_TOML="packages/sidan-csl-rs/Cargo.toml"
+EXAMPLES_CARGO_TOML="packages/whisky-examples/Cargo.toml"
 
 # Extract the current main version
 current_version=$(grep '^version = ' "$CARGO_TOML" | head -1 | sed 's/version = "\(.*\)"/\1/')
