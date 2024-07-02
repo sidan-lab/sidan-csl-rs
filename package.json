@@ -20,7 +20,8 @@
     "js:ts-json-gen": "cd packages/sidan-csl-rs/json-gen && cargo +stable run && cd ../.. && node ./scripts/run-json2ts.js && node ./scripts/json-ts-types.js",
     "rust:doc-clear": "rm -rf ./docs && mkdir docs && echo '<meta http-equiv=\"refresh\" content=\"0; url=whisky\">' > docs/index.html",
     "rust:doc": "npm run rust:doc-clear && RUSTDOCFLAGS=\"--cfg docsrs\" cargo doc --workspace --manifest-path packages/Cargo.toml --no-deps && cp -r ./packages/target/doc/* ./docs",
-    "start-doc": "npm run rust:doc && npx http-server ./docs"
+    "start-doc": "npm run rust:doc && npx http-server ./docs",
+    "bump-version": "./scripts/bump-version.sh"
   },
   "husky": {
     "hooks": {
